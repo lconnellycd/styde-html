@@ -10,7 +10,6 @@
     ],
     "require": {
         "php": "^8.0",
-        "illuminate/translation": "^11.32",
         "spatie/laravel-html": "^3.11"
     },
     "require-dev": {
@@ -32,8 +31,6 @@
             ],
             "aliases": {
                 "Field": "Styde\\Html\\Facades\\Field",
-                "Alert": "Styde\\Html\\Facades\\Alert",
-                "Menu": "Styde\\Html\\Facades\\Menu",
                 "Html": "\\Spatie\\Html\\Facades\\Html"
             },
             "dont-discover": [
