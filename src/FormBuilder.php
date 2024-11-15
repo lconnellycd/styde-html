@@ -3,7 +3,6 @@
 namespace Styde\Html;
 
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Collective\Html\FormBuilder as CollectiveFormBuilder;
 
 class FormBuilder extends CollectiveFormBuilder
 {

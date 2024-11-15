@@ -2,17 +2,8 @@
 
 namespace Styde\Html;
 
-use Collective\Html\HtmlServiceProvider as ServiceProvider;
-use Illuminate\Contracts\Auth\Access\Gate;
-use Illuminate\Foundation\AliasLoader;
+use \Spatie\Html\HtmlServiceProvider as ServiceProvider;
 use Illuminate\Support\Arr;
-use Styde\Html\Access\AccessHandler;
-use Styde\Html\Access\BasicAccessHandler;
-use Styde\Html\Alert\Container as Alert;
-use Styde\Html\Alert\Middleware as AlertMiddleware;
-use Styde\Html\Alert\SessionHandler as AlertSessionHandler;
-use Styde\Html\Menu\Menu;
-use Styde\Html\Menu\MenuGenerator;
 
 class HtmlServiceProvider extends ServiceProvider
 {
@@ -28,16 +19,6 @@ class HtmlServiceProvider extends ServiceProvider
      * @var \Styde\Html\Theme
      */
     protected $theme;
-    /**
-     * @var AccessHandler
-     */
-    protected $accessHandler = null;
-    /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
 
     public function boot()
     {
@@ -58,17 +39,10 @@ class HtmlServiceProvider extends ServiceProvider
     public function register()
     {
         parent::register();
-
         $this->mergeConfigFrom(__DIR__.'/../config.php', 'html');
-
-        $this->registerAccessHandler();
-
+        $this->registerHtmlBuilder();
+        $this->registerFormBuilder();
         $this->registerFieldBuilder();
-
-        $this->registerAlertContainer();
-        $this->registerAlertMiddleware();
-
-        $this->registerMenuGenerator();
     }
 
     /**
@@ -104,29 +78,6 @@ class HtmlServiceProvider extends ServiceProvider
         }
 
         return $this->theme;
-    }
-
-    /**
-     * Register the AccessHandler implementation into the IoC Container.
-     * This package provides a BasicAccessHandler.
-     *
-     * @return \Styde\Html\Access\AccessHandler
-     */
-    protected function registerAccessHandler()
-    {
-        $this->app->singleton('access', function ($app) {
-            $guard = $app['config']->get('html.guard', null);
-            $handler = new BasicAccessHandler($app['auth']->guard($guard));
-
-            $gate = $app->make(Gate::class);
-            if ($gate) {
-                $handler->setGate($gate);
-            }
-
-            return $handler;
-        });
-
-        $this->app->alias('access', AccessHandler::class);
     }
 
     /**
@@ -202,82 +153,6 @@ class HtmlServiceProvider extends ServiceProvider
     }
 
     /**
-     * Get the Alert handler implementation used to persist alert messages.
-     *
-     * This will be used internally by the Alert Container class so we don't
-     * need to add this class to the IoC container.
-     *
-     * @return AlertSessionHandler
-     */
-    protected function getAlertHandler()
-    {
-        return new AlertSessionHandler(
-            $this->app['session.store'],
-            'styde/alerts'
-        );
-    }
-
-    /**
-     * Register the Alert Container instance
-     */
-    protected function registerAlertContainer()
-    {
-        $this->app->singleton('alert', function ($app) {
-            $this->loadConfigurationOptions();
-
-            $alert = new Alert(
-                $this->getAlertHandler(),
-                $this->getTheme()
-            );
-
-            if ($this->options['translate_texts']) {
-                $alert->setLang($app['translator']);
-            }
-
-            return $alert;
-        });
-
-        $this->app->alias('alert', Alert::class);
-    }
-
-    /**
-     * Register the Alert Middleware instance
-     */
-    protected function registerAlertMiddleware()
-    {
-        $this->app->singleton(AlertMiddleware::class, function ($app) {
-            return new AlertMiddleware($app['alert']);
-        });
-    }
-
-    /**
-     * Register the Menu Generator instance
-     */
-    protected function registerMenuGenerator()
-    {
-        $this->app->bind('menu', function ($app) {
-
-            $this->loadConfigurationOptions();
-
-            $menu = new MenuGenerator(
-                $app['url'],
-                $app['config'],
-                $this->getTheme()
-            );
-
-            if ($this->options['control_access']) {
-                $menu->setAccessHandler($app[AccessHandler::class]);
-            }
-
-            if ($this->options['translate_texts']) {
-                $menu->setLang($app['translator']);
-            }
-
-            return $menu;
-        });
-    }
-
-    /**
      * Get the services provided by the provider.
      *
      * @return array
@@ -287,11 +162,7 @@ class HtmlServiceProvider extends ServiceProvider
         return [
             HtmlBuilder::class,
             FormBuilder::class,
-            AccessHandler::class,
             FieldBuilder::class,
-            Alert::class,
-            AlertMiddleware::class,
-            Menu::class,
             'html',
             'form',
             'field',

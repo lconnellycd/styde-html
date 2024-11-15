@@ -2,14 +2,15 @@
 
 namespace Styde\Html;
 
-use Styde\Html\Access\VerifyAccess;
+// use Styde\Html\Access\VerifyAccess;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Translation\Translator as Lang;
 
 class FieldBuilder
 {
-    use VerifyAccess, Macroable {
+//    use VerifyAccess;
+    use Macroable {
         Macroable::__call as macroCall;
     }
 
@@ -731,9 +732,9 @@ class FieldBuilder
     {
         $attributes = $this->replaceAttributes($attributes);
 
-        if (!$this->checkAccess($attributes)) {
-            return '';
-        }
+//        if (!$this->checkAccess($attributes)) {
+//            return '';
+//        }
 
         $required = $this->getRequired($attributes);
         $label = $this->getLabel($name, $attributes);
