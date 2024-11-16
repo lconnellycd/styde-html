@@ -128,9 +128,9 @@ class HtmlServiceProvider extends ServiceProvider
                 $app['translator']
             );
 
-            if ($this->options['control_access']) {
-                $fieldBuilder->setAccessHandler($app[AccessHandler::class]);
-            }
+//            if ($this->options['control_access']) {
+//                $fieldBuilder->setAccessHandler($app[AccessHandler::class]);
+//            }
 
             $fieldBuilder->setAbbreviations($this->options['abbreviations']);
 
