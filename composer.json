@@ -1,5 +1,5 @@
 {
-    "name": "jpcaci/styde-html",
+    "name": "caci/styde-html",
     "description": "Build form fields, menus, alert messages and other view components quickly",
     "license": "MIT",
     "authors": [
@@ -29,12 +29,8 @@
                 "Styde\\Html\\HtmlServiceProvider"
             ],
             "aliases": {
-                "Field": "Styde\\Html\\Facades\\Field",
-                "Html": "\\Spatie\\Html\\Facades\\Html"
-            },
-            "dont-discover": [
-                "spatie/laravel-html"
-            ]
+                "Field": "Styde\\Html\\Facades\\Field"
+            }
         }
     }
 }
