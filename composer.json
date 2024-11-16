@@ -29,7 +29,9 @@
                 "Styde\\Html\\HtmlServiceProvider"
             ],
             "aliases": {
-                "Field": "Styde\\Html\\Facades\\Field"
+                "Field": "Styde\\Html\\Facades\\Field",
+                "Html": "Styde\\Html\\Facades\\Html",
+                "Form": "Styde\\Html\\Facades\\Form"
             }
         }
     }

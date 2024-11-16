@@ -4,10 +4,10 @@ namespace Styde\Html\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Field extends Facade
+class Html extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'field';
+        return 'html';
     }
 }
