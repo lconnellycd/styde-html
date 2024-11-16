@@ -2,9 +2,7 @@
 
 namespace Styde\Html;
 
-use Spatie\Html\Html;
-
-class HtmlBuilder extends Html
+class HtmlBuilder extends CollectiveHtmlBuilder
 {
     /**
      * Builds an HTML class attribute dynamically.

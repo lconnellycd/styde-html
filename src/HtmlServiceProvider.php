@@ -2,7 +2,7 @@
 
 namespace Styde\Html;
 
-use \Spatie\Html\HtmlServiceProvider as ServiceProvider;
+use Styde\Html\CollectiveHtmlServiceProvider as ServiceProvider;
 use Illuminate\Support\Arr;
 
 class HtmlServiceProvider extends ServiceProvider
