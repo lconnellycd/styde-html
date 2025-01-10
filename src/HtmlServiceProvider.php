@@ -4,6 +4,9 @@ namespace Styde\Html;
 
 use Styde\Html\CollectiveHtmlServiceProvider as ServiceProvider;
 use Illuminate\Support\Arr;
+use Styde\Html\Access\AccessHandler;
+use Styde\Html\Menu\Menu;
+use Styde\Html\Menu\MenuGenerator;
 
 class HtmlServiceProvider extends ServiceProvider
 {
@@ -43,6 +46,7 @@ class HtmlServiceProvider extends ServiceProvider
         $this->registerHtmlBuilder();
         $this->registerFormBuilder();
         $this->registerFieldBuilder();
+        $this->registerMenuGenerator();
     }
 
     /**
@@ -152,6 +156,33 @@ class HtmlServiceProvider extends ServiceProvider
         });
     }
 
+     /**
+     * Register the Menu Generator instance
+     */
+    protected function registerMenuGenerator()
+    {
+        $this->app->bind('menu', function ($app) {
+
+            $this->loadConfigurationOptions();
+
+            $menu = new MenuGenerator(
+                $app['url'],
+                $app['config'],
+                $this->getTheme()
+            );
+
+            if ($this->options['control_access']) {
+                $menu->setAccessHandler($app[AccessHandler::class]);
+            }
+
+            if ($this->options['translate_texts']) {
+                $menu->setLang($app['translator']);
+            }
+
+            return $menu;
+        });
+    }
+
     /**
      * Get the services provided by the provider.
      *
@@ -163,6 +194,7 @@ class HtmlServiceProvider extends ServiceProvider
             HtmlBuilder::class,
             FormBuilder::class,
             FieldBuilder::class,
+            Menu::class,
             'html',
             'form',
             'field',

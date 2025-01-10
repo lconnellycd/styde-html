@@ -31,7 +31,8 @@
             "aliases": {
                 "Field": "Styde\\Html\\Facades\\Field",
                 "Html": "Styde\\Html\\Facades\\Html",
-                "Form": "Styde\\Html\\Facades\\Form"
+                "Form": "Styde\\Html\\Facades\\Form",
+                "Menu": "Styde\\Html\\Facades\\Menu"
             }
         }
     }
